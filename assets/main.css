@@ -21,10 +21,15 @@
     border: 1px solid black;
 }
 
-.snake-head {
-    background-color: green;
+.food {
+    background-color: red;
 }
+
 
 .snake-body {
     background-color: orange;
+}
+
+.snake-head {
+    background-color: green;
 }

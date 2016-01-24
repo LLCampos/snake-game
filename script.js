@@ -7,8 +7,16 @@ var grid = {
 var snake = {
     body : [[17,17],[16,17],[15,17]] ,
     direction : [1,0],
-
+    tail : function() {
+        return this.body.slice(-1)[0];
+    }
 };
+
+
+var user = {
+    points : 0
+};
+
 
 var changeDirection = function(event) {
     switch (event.which) {
@@ -36,16 +44,24 @@ var render = function() {
                 }
         };
 
-var positionSnake = function() {
-
+var despositionSnake = function() {
+// actualiza a view tendo em conta as novas posições
     for (var i in snake.body) {
-       $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).toggleClass('snake-body');
+       $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).removeClass('snake-body snake-head');
+    }
+};
+
+var positionSnake = function() {
+// actualiza a view tendo em conta as novas posições
+    for (var i in snake.body) {
+       $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).addClass('snake-body');
     }
 
-    $('.line').eq(snake.body[0][1] - 1).find('.square').eq(snake.body[0][0] - 1).toggleClass('snake-head');
+    $('.line').eq(snake.body[0][1] - 1).find('.square').eq(snake.body[0][0] - 1).addClass('snake-head');
 };
 
 var newPositions = function() {
+// actualiza as posições da cobra
     var new_head_x_position = snake.body[0][0] + snake.direction[0];
     var new_head_y_position = snake.body[0][1] + snake.direction[1];
 
@@ -54,11 +70,50 @@ var newPositions = function() {
 
 };
 
-
 var move = function() {
-        positionSnake();
-        newPositions();
-        positionSnake();
+// move a cobra
+    despositionSnake();
+    newPositions();
+    positionSnake();
+};
+
+var appearFood = function() {
+    food_x_position = Math.floor((Math.random() * grid.columns) + 1);
+    food_y_position = Math.floor((Math.random() * grid.columns) + 1);
+    $('.line').eq(food_y_position).find('.square').eq(food_x_position).addClass('food');
+};
+
+var updatePoints = function() {
+    $(".n-points").text(user.points);
+};
+
+
+var eat = function() {
+    user.points += 1;
+    updatePoints();
+    appearFood();
+};
+
+var lookForFood = function() {
+    var head = $('.line').eq(snake.body[0][1] - 1).find('.square').eq(snake.body[0][0] - 1);
+    if (head.hasClass('food')) {
+        eat();
+    }
+};
+
+
+var tick = function() {
+    grow();
+    move();
+    lookForFood();
+};
+
+var grow = function() {
+    var tail = $('.line').eq(snake.tail()[1] - 1).find('.square').eq(snake.tail()[0] - 1);
+    if (tail.hasClass('food')) {
+        snake.body.push(snake.tail());
+        tail.removeClass('food');
+    }
 };
 
 
@@ -66,6 +121,7 @@ var move = function() {
 $( document ).ready(function() {
     render();
     positionSnake();
+    appearFood();
     $(document).on('keydown', changeDirection);
-    setInterval(move, 200);
+    setInterval(tick, 100);
 });

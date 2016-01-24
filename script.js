@@ -21,16 +21,24 @@ var user = {
 var changeDirection = function(event) {
     switch (event.which) {
         case 39: // ->
-            snake.direction = [1,0];
+            if (!(snake.direction[0] == -1 && snake.direction[1] === 0)) {
+                snake.direction = [1,0];
+            }
             break;
         case 38: // ^
-            snake.direction = [0,-1];
+            if (!(snake.direction[0] === 0 && snake.direction[1] === 1)) {
+                snake.direction = [0,-1];
+            }
             break;
         case 37: // <-
-            snake.direction = [-1,0];
+            if (!(snake.direction[0] === 1 && snake.direction[1] === 0)) {
+                snake.direction = [-1,0];
+            }
             break;
         case 40: // V
-            snake.direction = [0,1];
+            if (!(snake.direction[0] === 0 && snake.direction[1] === -1)) {
+                snake.direction = [0,1];
+            }
             break;
     }
 };

@@ -87,7 +87,7 @@ var move = function() {
 
 var appearFood = function() {
     food_x_position = Math.floor((Math.random() * grid.columns) + 1);
-    food_y_position = Math.floor((Math.random() * grid.columns) + 1);
+    food_y_position = Math.floor((Math.random() * grid.lines) + 1);
     $('.line').eq(food_y_position).find('.square').eq(food_x_position).addClass('food');
 };
 

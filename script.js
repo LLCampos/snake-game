@@ -62,7 +62,7 @@ var despositionSnake = function() {
 
 var positionSnake = function() {
 // coloca a cobra na view
-    for (var i in snake.body) {
+    for (i = 1; i < snake.body.length; i++) {
        $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).addClass('snake-body');
     }
 

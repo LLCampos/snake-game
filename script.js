@@ -44,23 +44,24 @@ var changeDirection = function(event) {
 };
 
 var render = function() {
-                for (i = 0; i < grid.lines; i++) {
-                    $('#grid').append('<div class="line"></div');
-                }
-                for (i = 0; i < grid.columns; i++) {
-                    $('.line').append('<div class="square"></div');
-                }
-        };
+//  cria a grelha de jogo
+    for (i = 0; i < grid.lines; i++) {
+        $('#grid').append('<div class="line"></div');
+    }
+    for (i = 0; i < grid.columns; i++) {
+        $('.line').append('<div class="square"></div');
+    }
+};
 
 var despositionSnake = function() {
-// actualiza a view tendo em conta as novas posições
+// retira a cobra da view
     for (var i in snake.body) {
        $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).removeClass('snake-body snake-head');
     }
 };
 
 var positionSnake = function() {
-// actualiza a view tendo em conta as novas posições
+// coloca a cobra na view
     for (var i in snake.body) {
        $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).addClass('snake-body');
     }
@@ -86,23 +87,27 @@ var move = function() {
 };
 
 var appearFood = function() {
+//  faz um pedaço de comida aparecer num sítio aleatório da grelha de jogo
     food_x_position = Math.floor((Math.random() * grid.columns) + 1);
     food_y_position = Math.floor((Math.random() * grid.lines) + 1);
     $('.line').eq(food_y_position).find('.square').eq(food_x_position).addClass('food');
 };
 
 var updatePoints = function() {
+//   actualiza, no html, o número de pontos do utilizador
     $(".n-points").text(user.points);
 };
 
 
 var eat = function() {
+//  aumenta o número de pontos do utilizador e faz aparecer uma nova peça de comida
     user.points += 1;
     updatePoints();
     appearFood();
 };
 
 var lookForFood = function() {
+//  verfica se a cobra comeu alguma peça de comida
     var head = $('.line').eq(snake.body[0][1] - 1).find('.square').eq(snake.body[0][0] - 1);
     if (head.hasClass('food')) {
         eat();
@@ -110,13 +115,8 @@ var lookForFood = function() {
 };
 
 
-var tick = function() {
-    grow();
-    move();
-    lookForFood();
-};
-
 var grow = function() {
+//  faz a cobra crescer, por ter comido
     var tail = $('.line').eq(snake.tail()[1] - 1).find('.square').eq(snake.tail()[0] - 1);
     if (tail.hasClass('food')) {
         snake.body.push(snake.tail());
@@ -124,6 +124,11 @@ var grow = function() {
     }
 };
 
+var tick = function() {
+    grow();
+    move();
+    lookForFood();
+};
 
 
 $( document ).ready(function() {

@@ -8,7 +8,11 @@ var snake = {
     body : [[17,17],[16,17],[15,17]] ,
     direction : [1,0],
     tail : function() {
-        return this.body.slice(-1)[0];
+        var position_tail = this.body.slice(-1)[0];
+        return $('.line').eq(position_tail[1] - 1).find('.square').eq(position_tail[0] - 1);
+    },
+    head : function() {
+        return $('.line').eq(this.body[0][1] - 1).find('.square').eq(this.body[0][0] - 1);
     }
 };
 
@@ -108,8 +112,7 @@ var eat = function() {
 
 var lookForFood = function() {
 //  verfica se a cobra comeu alguma peça de comida
-    var head = $('.line').eq(snake.body[0][1] - 1).find('.square').eq(snake.body[0][0] - 1);
-    if (head.hasClass('food')) {
+    if (snake.head().hasClass('food')) {
         eat();
     }
 };
@@ -117,17 +120,25 @@ var lookForFood = function() {
 
 var grow = function() {
 //  faz a cobra crescer, por ter comido
-    var tail = $('.line').eq(snake.tail()[1] - 1).find('.square').eq(snake.tail()[0] - 1);
-    if (tail.hasClass('food')) {
-        snake.body.push(snake.tail());
-        tail.removeClass('food');
+    if (snake.tail().hasClass('food')) {
+        snake.body.push(snake.body.slice(-1)[0]);
+        snake.tail().removeClass('food');
     }
 };
+
+//var checkForColisionsWithBody = function() {
+
+//};
+
+//var checkForColisions = function() {
+//    checkForColisionsWithBody();
+//};
 
 var tick = function() {
     grow();
     move();
     lookForFood();
+    //checkForColisions();
 };
 
 

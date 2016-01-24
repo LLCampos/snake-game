@@ -1,0 +1,30 @@
+
+
+#grid {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+}
+
+.line {
+    display: block;
+    height: 15px;
+}
+
+.square {
+    display: inline-block;
+    float: left;
+    height: 15px;
+    width: 15px;
+    border: 1px solid black;
+}
+
+.snake-head {
+    background-color: green;
+}
+
+.snake-body {
+    background-color: orange;
+}

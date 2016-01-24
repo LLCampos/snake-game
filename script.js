@@ -126,26 +126,36 @@ var grow = function() {
     }
 };
 
-//var checkForColisionsWithBody = function() {
+var checkForColisionsWithBody = function() {
+    if (snake.head().hasClass('snake-body') && snake.head().hasClass('snake-head')) {
+        return true;
+    }
+};
 
-//};
-
-//var checkForColisions = function() {
-//    checkForColisionsWithBody();
-//};
+var checkForColisions = function() {
+    if (checkForColisionsWithBody()) {
+        restartGame();
+    }
+};
 
 var tick = function() {
     grow();
     move();
     lookForFood();
-    //checkForColisions();
+    checkForColisions();
 };
 
+var restartGame = function() {
 
-$( document ).ready(function() {
+};
+
+var game = function() {
     render();
     positionSnake();
     appearFood();
     $(document).on('keydown', changeDirection);
     setInterval(tick, 100);
-});
+};
+
+
+$( document ).ready(game);

@@ -210,10 +210,21 @@ var updateHighscores  = function(new_score) {
     highscores.scores.push(new_score);
     highscores.sortScores();
     highscores.scores = highscores.scores.slice(0,10);
+    localStorage.setItem('scores', JSON.stringify(highscores.scores));
     highscores.updateHighscoresScreen();
 };
 
+var getScores = function() {
+    var scoresInLocalStorage = localStorage.getItem('scores');
+
+    if (scoresInLocalStorage) {
+        highscores.scores = JSON.parse(scoresInLocalStorage);
+        highscores.updateHighscoresScreen();
+    }
+};
+
 var newGame = function() {
+    getScores();
     resetGame();
     $(document).on('keydown', changeDirection);
     $(document).on('keypress', keyPressDuringGameAction);

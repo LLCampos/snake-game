@@ -21,6 +21,20 @@ var user = {
     points : 0
 };
 
+var resetGame = function() {
+    snake.body = [[17,17],[16,17],[15,17]];
+    snake.direction = [1,0];
+    user.points = 0;
+    updatePoints();
+    if (typeof ticks !== 'undefined') {
+        clearInterval(ticks);
+    }
+
+    render();
+    positionSnake();
+    appearFood();
+};
+
 
 var changeDirection = function(event) {
     switch (event.which) {
@@ -141,7 +155,7 @@ var checkForColisionsWithWall = function() {
 
 var checkForColisions = function() {
     if (checkForColisionsWithBody() || checkForColisionsWithWall()) {
-        return none;
+        newGame();
     }
 };
 
@@ -152,13 +166,11 @@ var tick = function() {
     checkForColisions();
 };
 
-var game = function() {
-    render();
-    positionSnake();
-    appearFood();
+var newGame = function() {
+    resetGame();
     $(document).on('keydown', changeDirection);
-    setInterval(tick, 100);
+    ticks = setInterval(tick, 100);
 };
 
 
-$( document ).ready(game);
+$( document ).ready(newGame);

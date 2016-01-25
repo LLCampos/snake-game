@@ -1,11 +1,13 @@
 var grid = {
-    lines: 34,
-    columns: 34
+    lines: 50,
+    columns: 50,
+    x_middle : function() {return this.columns / 2;},
+    y_middle : function() {return this.lines / 2;}
 };
 
 
 var snake = {
-    body : [[17,17],[16,17],[15,17]] ,
+    body : [[grid.x_middle(), grid.y_middle()], [grid.x_middle() - 1, grid.y_middle()], [grid.x_middle() - 2, grid.y_middle()]] ,
     direction : [1,0],
     tail : function() {
         var position_tail = this.body.slice(-1)[0];
@@ -23,7 +25,7 @@ var user = {
 
 var resetGame = function() {
 
-    snake.body = [[17,17],[16,17],[15,17]];
+    snake.body = [[grid.x_middle(), grid.y_middle()], [grid.x_middle() - 1, grid.y_middle()], [grid.x_middle() - 2, grid.y_middle()]];
     snake.direction = [1,0];
     user.points = 0;
     updatePoints();

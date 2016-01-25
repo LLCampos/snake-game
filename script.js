@@ -49,6 +49,7 @@ var changeDirection = function(event) {
 
 var render = function() {
 //  cria a grelha de jogo
+    $('#grid').empty();
     for (i = 0; i < grid.lines; i++) {
         $('#grid').append('<div class="line"></div');
     }
@@ -140,7 +141,7 @@ var checkForColisionsWithWall = function() {
 
 var checkForColisions = function() {
     if (checkForColisionsWithBody() || checkForColisionsWithWall()) {
-        alert('oh!');
+        return none;
     }
 };
 

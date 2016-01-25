@@ -5,6 +5,19 @@ var grid = {
     y_middle : function() {return this.lines / 2;}
 };
 
+var highscores = {
+    scores : [],
+    sortScores : function() {
+        highscores.scores.sort(function(a,b) {return a-b;});
+        highscores.scores.reverse();
+    },
+    updateHighscoresScreen : function() {
+        for (var i in highscores.scores) {
+            $("#highscores").find('li').eq(i).text(highscores.scores[i]);
+        }
+    }
+};
+
 
 var snake = {
     body : [[grid.x_middle(), grid.y_middle()], [grid.x_middle() - 1, grid.y_middle()], [grid.x_middle() - 2, grid.y_middle()]] ,
@@ -181,6 +194,7 @@ var checkForColisionsWithWall = function() {
 
 var checkForColisions = function() {
     if (checkForColisionsWithBody() || checkForColisionsWithWall()) {
+        updateHighscores(user.points);
         newGame();
     }
 };
@@ -192,11 +206,18 @@ var tick = function() {
     checkForColisions();
 };
 
+var updateHighscores  = function(new_score) {
+    highscores.scores.push(new_score);
+    highscores.sortScores();
+    highscores.scores = highscores.scores.slice(0,10);
+    highscores.updateHighscoresScreen();
+};
+
 var newGame = function() {
     resetGame();
     $(document).on('keydown', changeDirection);
     $(document).on('keypress', keyPressDuringGameAction);
-    ticks = setInterval(tick, 100);
+    ticks = setInterval(tick, 70);
 };
 
 

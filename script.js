@@ -37,6 +37,8 @@ var resetGame = function() {
     appearFood();
 };
 
+var pause = false;
+
 
 var changeDirection = function(event) {
     switch (event.which) {
@@ -67,7 +69,13 @@ var changeDirection = function(event) {
 var keyPressDuringGameAction = function(event) {
     switch (event.which) {
         case 112:
-            clearInterval(ticks);
+            if (pause) {
+                ticks = setInterval(tick, 100);
+                pause = false;
+            } else {
+                clearInterval(ticks);
+                pause = true;
+            }
     }
 };
 

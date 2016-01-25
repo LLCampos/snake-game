@@ -1,6 +1,6 @@
 var grid = {
-    lines: 50,
-    columns: 50,
+    lines: 40,
+    columns: 40,
     x_middle : function() {return this.columns / 2;},
     y_middle : function() {return this.lines / 2;}
 };

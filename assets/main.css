@@ -1,12 +1,39 @@
+@font-face {
+    font-family: "space-age";
+    src: url("fonts/space age.ttf");
+}
 
+body {
+    background-color: #000;
+    background-image: url("images/sky.png");
+    color: #FFF;
+}
 
-#grid {
+#page-header {
+    display: block;
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+#page-header h1 {
+    font-family: "space-age",serif;
+    font-size: 50px;
+    text-shadow: 0px 0px 6px #FFF;
+    margin-bottom: 0;
+}
+
+#game-area {
     display: inline-block;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     margin-top: 5px;
-    border: 1px solid black;
+}
+
+#grid {
+    border: 1px solid #FFF;
 }
 
 .line {
@@ -19,6 +46,7 @@
     float: left;
     height: 10px;
     width: 10px;
+    margin: 0.5px;
     /* border: 1px solid black; */
 }
 
@@ -29,11 +57,11 @@
 
 
 .snake-body {
-    background-color: orange;
-     border-radius: 0;
+    background-color: #FFF;
+    border-radius: 0;
 }
 
 .snake-head {
-    background-color: green;
+    background-color: #FFF;
      border-radius: 0;
 }

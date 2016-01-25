@@ -22,10 +22,12 @@ var user = {
 };
 
 var resetGame = function() {
+
     snake.body = [[17,17],[16,17],[15,17]];
     snake.direction = [1,0];
     user.points = 0;
     updatePoints();
+
     if (typeof ticks !== 'undefined') {
         clearInterval(ticks);
     }
@@ -58,6 +60,14 @@ var changeDirection = function(event) {
                 snake.direction = [0,1];
             }
             break;
+    }
+};
+
+
+var keyPressDuringGameAction = function(event) {
+    switch (event.which) {
+        case 112:
+            clearInterval(ticks);
     }
 };
 
@@ -107,8 +117,8 @@ var move = function() {
 
 var appearFood = function() {
 //  faz um pedaço de comida aparecer num sítio aleatório da grelha de jogo
-    food_x_position = Math.floor((Math.random() * grid.columns) + 1);
-    food_y_position = Math.floor((Math.random() * grid.lines) + 1);
+    food_x_position = Math.floor((Math.random() * grid.columns));
+    food_y_position = Math.floor((Math.random() * grid.lines));
     $('.line').eq(food_y_position).find('.square').eq(food_x_position).addClass('food');
 };
 
@@ -169,6 +179,7 @@ var tick = function() {
 var newGame = function() {
     resetGame();
     $(document).on('keydown', changeDirection);
+    $(document).on('keypress', keyPressDuringGameAction);
     ticks = setInterval(tick, 100);
 };
 

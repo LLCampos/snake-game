@@ -65,17 +65,23 @@ var changeDirection = function(event) {
     }
 };
 
+var pressPause = function() {
+    if (pause) {
+        ticks = setInterval(tick, 100);
+        pause = false;
+        $(document).on('keydown', changeDirection);
+    } else {
+        clearInterval(ticks);
+        pause = true;
+        $(document).off('keydown', changeDirection);
+    }
+};
+
 
 var keyPressDuringGameAction = function(event) {
     switch (event.which) {
         case 112:
-            if (pause) {
-                ticks = setInterval(tick, 100);
-                pause = false;
-            } else {
-                clearInterval(ticks);
-                pause = true;
-            }
+            pressPause();
     }
 };
 

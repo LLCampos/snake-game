@@ -132,9 +132,15 @@ var checkForColisionsWithBody = function() {
     }
 };
 
+var checkForColisionsWithWall = function() {
+    if (snake.body[0][0] > grid.columns || snake.body[0][0] < 1 || snake.body[0][1] > grid.lines || snake.body[0][1] < 1) {
+        return true;
+    }
+};
+
 var checkForColisions = function() {
-    if (checkForColisionsWithBody()) {
-        restartGame();
+    if (checkForColisionsWithBody() || checkForColisionsWithWall()) {
+        alert('oh!');
     }
 };
 
@@ -143,10 +149,6 @@ var tick = function() {
     move();
     lookForFood();
     checkForColisions();
-};
-
-var restartGame = function() {
-
 };
 
 var game = function() {

@@ -1,16 +1,19 @@
 var grid = {
     lines: 40,
     columns: 40,
+    // coordinates of center of grid
     x_middle : function() {return this.columns / 2;},
     y_middle : function() {return this.lines / 2;}
 };
 
 var highscores = {
     scores : [],
+
     sortScores : function() {
         highscores.scores.sort(function(a,b) {return a-b;});
         highscores.scores.reverse();
     },
+
     updateHighscoresScreen : function() {
         for (var i in highscores.scores) {
             $("#highscores").find('li').eq(i).text(highscores.scores[i]);
@@ -20,14 +23,29 @@ var highscores = {
 
 
 var snake = {
+    // initial body of the snake, 4 squares long
     body : [[grid.x_middle(), grid.y_middle()], [grid.x_middle() - 1, grid.y_middle()], [grid.x_middle() - 2, grid.y_middle()]] ,
+    // initial direction of the snake
     direction : [1,0],
+
+    // returns JQuery object corresponding to the tail of the snake
     tail : function() {
         var position_tail = this.body.slice(-1)[0];
         return $('.line').eq(position_tail[1] - 1).find('.square').eq(position_tail[0] - 1);
     },
+
+    // returns JQuery object corresponding to the head of the snake
     head : function() {
         return $('.line').eq(this.body[0][1] - 1).find('.square').eq(this.body[0][0] - 1);
+    },
+
+    // updates snake positions
+    newPositions : function() {
+        var new_head_x_position = this.body[0][0] + this.direction[0];
+        var new_head_y_position = this.body[0][1] + this.direction[1];
+
+        this.body.unshift([new_head_x_position, new_head_y_position]);
+        this.body.pop();
     }
 };
 
@@ -36,8 +54,10 @@ var user = {
     points : 0
 };
 
-var resetGame = function() {
+var pause = false;
 
+var resetGame = function() {
+    // does everything it is needed to start a new game
     snake.body = [[grid.x_middle(), grid.y_middle()], [grid.x_middle() - 1, grid.y_middle()], [grid.x_middle() - 2, grid.y_middle()]];
     snake.direction = [1,0];
     user.points = 0;
@@ -52,10 +72,8 @@ var resetGame = function() {
     appearFood();
 };
 
-var pause = false;
-
-
 var changeDirection = function(event) {
+    // change snake direction
     switch (event.which) {
         case 39: // ->
             if (!(snake.direction[0] == -1 && snake.direction[1] === 0)) {
@@ -81,6 +99,7 @@ var changeDirection = function(event) {
 };
 
 var pressPause = function() {
+    // pause/dispause the game
     if (pause) {
         ticks = setInterval(tick, 100);
         pause = false;
@@ -94,6 +113,7 @@ var pressPause = function() {
 
 
 var keyPressDuringGameAction = function(event) {
+    // call functions depending on the key pressed
     switch (event.which) {
         case 112:
             pressPause();
@@ -101,7 +121,7 @@ var keyPressDuringGameAction = function(event) {
 };
 
 var render = function() {
-//  cria a grelha de jogo
+    // creates game grid on the html
     $('#grid').empty();
     for (i = 0; i < grid.lines; i++) {
         $('#grid').append('<div class="line"></div');
@@ -112,14 +132,14 @@ var render = function() {
 };
 
 var despositionSnake = function() {
-// retira a cobra da view
+    // takes snake of the view
     for (var i in snake.body) {
        $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).removeClass('snake-body snake-head');
     }
 };
 
 var positionSnake = function() {
-// coloca a cobra na view
+    // puts snake on the view
     for (i = 1; i < snake.body.length; i++) {
        $('.line').eq(snake.body[i][1] - 1).find('.square').eq(snake.body[i][0] - 1).addClass('snake-body');
     }
@@ -127,45 +147,36 @@ var positionSnake = function() {
     $('.line').eq(snake.body[0][1] - 1).find('.square').eq(snake.body[0][0] - 1).addClass('snake-head');
 };
 
-var newPositions = function() {
-// actualiza as posições da cobra
-    var new_head_x_position = snake.body[0][0] + snake.direction[0];
-    var new_head_y_position = snake.body[0][1] + snake.direction[1];
-
-    snake.body.unshift([new_head_x_position, new_head_y_position]);
-    snake.body.pop();
-
-};
 
 var move = function() {
-// move a cobra
+    // moves snake
     despositionSnake();
-    newPositions();
+    snake.newPositions();
     positionSnake();
 };
 
 var appearFood = function() {
-//  faz um pedaço de comida aparecer num sítio aleatório da grelha de jogo
+    // makes a piece of food appear in a random location in the game grid
     food_x_position = Math.floor((Math.random() * grid.columns));
     food_y_position = Math.floor((Math.random() * grid.lines));
     $('.line').eq(food_y_position).find('.square').eq(food_x_position).addClass('food');
 };
 
 var updatePoints = function() {
-//   actualiza, no html, o número de pontos do utilizador
+    // updates, on the html, the number of user points
     $(".n-points").text(user.points);
 };
 
 
 var eat = function() {
-//  aumenta o número de pontos do utilizador e faz aparecer uma nova peça de comida
+    // increases the number of user points and makes appear another piece of food
     user.points += 1;
     updatePoints();
     appearFood();
 };
 
 var lookForFood = function() {
-//  verfica se a cobra comeu alguma peça de comida
+    // verifies if snake ate some piece of food
     if (snake.head().hasClass('food')) {
         eat();
     }
@@ -173,7 +184,7 @@ var lookForFood = function() {
 
 
 var grow = function() {
-//  faz a cobra crescer, por ter comido
+    // makes snake grow 1 square
     if (snake.tail().hasClass('food')) {
         snake.body.push(snake.body.slice(-1)[0]);
         snake.tail().removeClass('food');
@@ -200,6 +211,7 @@ var checkForColisions = function() {
 };
 
 var tick = function() {
+    // makes one time unit pass
     grow();
     move();
     lookForFood();
@@ -215,6 +227,7 @@ var updateHighscores  = function(new_score) {
 };
 
 var getScores = function() {
+    // gets highscores from user localstorage
     var scoresInLocalStorage = localStorage.getItem('scores');
 
     if (scoresInLocalStorage) {

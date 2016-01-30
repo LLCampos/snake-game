@@ -56,6 +56,9 @@ var user = {
 
 var pause = false;
 
+// duration of time unit
+var snake_speed = 70;
+
 var resetGame = function() {
     // does everything it is needed to start a new game
     snake.body = [[grid.x_middle(), grid.y_middle()], [grid.x_middle() - 1, grid.y_middle()], [grid.x_middle() - 2, grid.y_middle()]];
@@ -101,7 +104,7 @@ var changeDirection = function(event) {
 var pressPause = function() {
     // pause/dispause the game
     if (pause) {
-        ticks = setInterval(tick, 100);
+        ticks = setInterval(tick, snake_speed);
         pause = false;
         $(document).on('keydown', changeDirection);
     } else {
@@ -241,7 +244,7 @@ var newGame = function() {
     resetGame();
     $(document).on('keydown', changeDirection);
     $(document).on('keypress', keyPressDuringGameAction);
-    ticks = setInterval(tick, 70);
+    ticks = setInterval(tick, snake_speed);
 };
 
 

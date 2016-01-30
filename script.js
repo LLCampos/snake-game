@@ -73,6 +73,10 @@ var resetGame = function() {
     render();
     positionSnake();
     appearFood();
+
+
+    $(document).off('keydown');
+    $(document).off('keypress');
 };
 
 var changeDirection = function(event) {
@@ -103,6 +107,7 @@ var changeDirection = function(event) {
 
 var pressPause = function() {
     // pause/dispause the game
+    alert(pause);
     if (pause) {
         ticks = setInterval(tick, snake_speed);
         pause = false;

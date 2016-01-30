@@ -93,3 +93,8 @@ p {
 #highscores h4 {
     text-align: center;
 }
+
+#info {
+    display: inline-block;
+    float: right;
+}
